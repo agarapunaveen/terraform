@@ -58,6 +58,21 @@ resource "aws_subnet" "database" {
 }
 
 
+resource "aws_db_subnet_group" "default" {
+  name       = "${var.project_name}"
+  subnet_ids = aws_subnet.database[*].id
+
+  tags = merge(
+    var.comman_tags,
+   
+    {
+        Name = "${var.project_name}"
+    }
+  )
+}
+
+
+
 resource "aws_eip" "nat" {
   domain   = "vpc"
 }
