@@ -19,8 +19,9 @@ resource "aws_internet_gateway" "gw" {
 }
 
 resource "aws_subnet" "public" {
-    count = length(local.az_names)
+    count = length(var.aws_subnet_public)
   vpc_id     = aws_vpc.main.id
+  map_public_ip_on_launch = true
   cidr_block = var.aws_subnet_public[count.index]
   availability_zone = local.az_names[count.index]
   tags = merge(
@@ -32,7 +33,7 @@ resource "aws_subnet" "public" {
 }
 
 resource "aws_subnet" "private" {
-    count = length(local.az_names)
+    count = length(var.aws_subnet_private)
   vpc_id     = aws_vpc.main.id
   cidr_block = var.aws_subnet_private[count.index]
   availability_zone = local.az_names[count.index]
@@ -45,7 +46,7 @@ resource "aws_subnet" "private" {
 }
 
 resource "aws_subnet" "database" {
-    count = length(local.az_names)
+    count = length(var.aws_subnet_database)
   vpc_id     = aws_vpc.main.id
   cidr_block = var.aws_subnet_database[count.index]
   availability_zone = local.az_names[count.index]
